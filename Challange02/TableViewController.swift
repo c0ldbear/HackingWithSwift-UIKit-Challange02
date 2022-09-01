@@ -17,6 +17,7 @@ class TableViewController: UITableViewController {
         title = "🛒 Shopping List"
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(promptForAddItem))
+        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Clear", style: .plain, target: self, action: #selector(clearShoppingList))
         
         if items.isEmpty {
             items = ["potato", "apple", "milk", "heavy cream", "tofu"]
@@ -53,6 +54,11 @@ class TableViewController: UITableViewController {
         let indexPath = IndexPath(row: 0, section: 0)
         items.insert(answer.capitalized, at: 0)
         tableView.insertRows(at: [indexPath], with: .automatic)
+    }
+    
+    @objc func clearShoppingList() {
+        items = []
+        tableView.reloadData()
     }
 
 }
