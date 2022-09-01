@@ -18,12 +18,6 @@ class TableViewController: UITableViewController {
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(promptForAddItem))
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Clear", style: .plain, target: self, action: #selector(clearShoppingList))
-        
-        if items.isEmpty {
-            items = ["potato", "apple", "milk", "heavy cream", "tofu"]
-        }
-        
-        tableView.reloadData()
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -43,8 +37,16 @@ class TableViewController: UITableViewController {
         ac.addTextField()
         
         let submitAction = UIAlertAction(title: "Submit", style: .default) { [weak self, weak ac] action in // we declare them as being weak so that Swift won’t create a strong reference cycle.
-            guard let answer = ac?.textFields?[0].text else { return }
-            self?.submit(answer)
+            guard let inputText = ac?.textFields?[0].text else { return }
+            
+            let answers = inputText.components(separatedBy: ",")
+            if answers.count > 1 {
+                for answer in answers.reversed() {
+                    self?.submit(answer)
+                }
+            } else {
+                self?.submit(answers[0])
+            }
         }
         ac.addAction(submitAction)
         present(ac, animated: true)
@@ -52,7 +54,7 @@ class TableViewController: UITableViewController {
     
     func submit(_ answer: String) {
         let indexPath = IndexPath(row: 0, section: 0)
-        items.insert(answer.capitalized, at: 0)
+        items.insert(answer.trimmingCharacters(in: .whitespaces).capitalized, at: 0)
         tableView.insertRows(at: [indexPath], with: .automatic)
     }
     
