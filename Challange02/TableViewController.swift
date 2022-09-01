@@ -9,6 +9,8 @@ import UIKit
 
 class TableViewController: UITableViewController {
 
+    // TODO: Add UIActivityViewController to share shopping list by email. Don't forget to use `let list = items.joined(separator: "\n")`
+    
     var items = [String]()
     
     override func viewDidLoad() {
